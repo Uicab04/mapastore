@@ -48,22 +48,8 @@ export default function HomePage({ setCurrentPage }: HomePageProps) {
           image: "/urban-city-poster.jpg",
           category: "urban",
         },
-        {
-          id: "3",
-          title: "Nature Call",
-          description: "Forest and mountains",
-          price: 28,
-          image: "/nature-forest-mountains-poster.jpg",
-          category: "landscape",
-        },
-        {
-          id: "4",
-          title: "Abstract Art",
-          description: "Contemporary abstract design",
-          price: 35,
-          image: "/abstract-colorful-modern-art.jpg",
-          category: "art",
-        },
+
+
         {
           id: "5",
           title: "Cosmic Journey",
@@ -73,13 +59,14 @@ export default function HomePage({ setCurrentPage }: HomePageProps) {
           category: "space",
         },
         {
-          id: "6",
-          title: "Minimalist Zen",
-          description: "Simple and peaceful",
-          price: 22,
-          image: "/minimalist-zen-simple-design.jpg",
+          id: "4",
+          title: "Abstract Art",
+          description: "Contemporary abstract design",
+          price: 35,
+          image: "/abstract-colorful-modern-art.jpg",
           category: "art",
         },
+        
       ]
       setPosters(defaultPosters)
       filterPosters(defaultPosters, "all")
