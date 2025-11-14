@@ -1,0 +1,214 @@
+<!-- Componente: right-dropdown.html
+  Pega el bloque <style> + <div id="right-dropdown"> + <script> en tu página HTML,
+  idealmente justo dentro del <body>.
+-->
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Right Dropdown Component</title>
+  <style>
+    /* Estilos para el menú desplegable fijo a la derecha */
+    #right-dropdown {
+      position: fixed;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 9999;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    #rd-toggle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg,#2b7cff,#0052d4);
+      color: white;
+      border: none;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #rd-menu {
+      margin-right: 8px;
+      margin-bottom: 12px;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+      overflow: hidden;
+      min-width: 200px;
+      transform-origin: 100% 50%;
+      transition: transform 180ms ease, opacity 180ms ease;
+      opacity: 0;
+      transform: scale(0.92);
+      pointer-events: none;
+    }
+
+    #rd-menu.open {
+      opacity: 1;
+      transform: scale(1);
+      pointer-events: auto;
+    }
+
+    #rd-menu ul {
+      list-style: none;
+      margin: 0;
+      padding: 8px 0;
+    }
+
+    #rd-menu li {
+      padding: 10px 16px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      cursor: pointer;
+      color: #111827;
+      font-size: 14px;
+    }
+
+    #rd-menu li:hover {
+      background: #f3f4f6;
+    }
+
+    #rd-menu .rd-divider {
+      height: 1px;
+      background: #e6e6e6;
+      margin: 6px 0;
+    }
+
+    /* Small screens: reduce right offset */
+    @media (max-width: 480px) {
+      #right-dropdown { right: 10px; }
+      #rd-toggle { width:44px; height:44px; }
+      #rd-menu { min-width: 160px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="right-dropdown" aria-hidden="false">
+  <div style="display:flex;flex-direction:column;align-items:flex-end;">
+    <nav id="rd-menu" role="menu" aria-hidden="true" aria-label="Menú lateral derecho">
+      <ul>
+        <li role="menuitem" tabindex="0" data-action="profile">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:.9"><path d="M12 12a4 4 0 100-8 4 4 0 000 8zm0 2c-5 0-8 2.5-8 4v2h16v-2c0-1.5-3-4-8-4z" fill="currentColor"/></svg>
+          Perfil
+        </li>
+        <li role="menuitem" tabindex="0" data-action="settings">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:.9"><path d="M12 8a4 4 0 100 8 4 4 0 000-8z" fill="currentColor"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82L4.3 4.7a2 2 0 012.83-2.83l.06.06a1.65 1.65 0 001.82.33H11a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09c.12.66.57 1.24 1.2 1.51.66.27 1.24.72 1.51 1.2l.06.06a2 2 0 012.83 2.83l-.06.06c-.4.4-.6.95-.33 1.82.27.66.72 1.24 1.2 1.51H21a2 2 0 010 4h-.09c-.66.12-1.24.57-1.51 1.2-.27.66-.72 1.24-1.2 1.51z" fill="currentColor"/></svg>
+          Ajustes
+        </li>
+        <li class="rd-divider" aria-hidden="true"></li>
+        <li role="menuitem" tabindex="0" data-action="help">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:.9"><path d="M12 2a10 10 0 100 20 10 10 0 000-20zm.5 15h-1v-1h1v1zm1.07-7.75c-.9.45-1.07 1.01-1.07 1.75h-1.5a2.5 2.5 0 012.5-2.5c.83 0 1.5.67 1.5 1.5 0 .83-.67 1.5-1.5 1.5h-.5v1h.5c1.38 0 2.5-1.12 2.5-2.5S16.38 6 15 6c-.13 0-.26.01-.37.05z" fill="currentColor"/></svg>
+          Ayuda
+        </li>
+        <li role="menuitem" tabindex="0" data-action="logout">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" style="opacity:.9"><path d="M16 13v-2H7V8l-5 4 5 4v-3zM20 3h-8v2h8v14h-8v2h8a2 2 0 002-2V5a2 2 0 00-2-2z" fill="currentColor"/></svg>
+          Cerrar sesión
+        </li>
+      </ul>
+    </nav>
+
+    <button id="rd-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="rd-menu" title="Abrir menú">
+      <!-- Icono (tres puntos) -->
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="5" cy="12" r="2" fill="white"/><circle cx="12" cy="12" r="2" fill="white"/><circle cx="19" cy="12" r="2" fill="white"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  (function () {
+    const toggle = document.getElementById('rd-toggle');
+    const menu = document.getElementById('rd-menu');
+
+    function openMenu() {
+      menu.classList.add('open');
+      toggle.setAttribute('aria-expanded', 'true');
+      menu.setAttribute('aria-hidden', 'false');
+      // Focus al primer item
+      const first = menu.querySelector('[role="menuitem"]');
+      if (first) first.focus();
+      document.addEventListener('click', outsideClick);
+      document.addEventListener('keydown', onKeyDown);
+    }
+
+    function closeMenu() {
+      menu.classList.remove('open');
+      toggle.setAttribute('aria-expanded', 'false');
+      menu.setAttribute('aria-hidden', 'true');
+      document.removeEventListener('click', outsideClick);
+      document.removeEventListener('keydown', onKeyDown);
+    }
+
+    function toggleMenu(e) {
+      e.stopPropagation();
+      if (menu.classList.contains('open')) closeMenu();
+      else openMenu();
+    }
+
+    function outsideClick(e) {
+      if (!menu.contains(e.target) && e.target !== toggle) closeMenu();
+    }
+
+    function onKeyDown(e) {
+      if (e.key === 'Escape') { closeMenu(); toggle.focus(); }
+      // navegación simple con flechas
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        const items = Array.from(menu.querySelectorAll('[role="menuitem"]'));
+        const idx = items.indexOf(document.activeElement);
+        if (e.key === 'ArrowDown') {
+          items[(idx + 1) % items.length].focus();
+        } else {
+          items[(idx - 1 + items.length) % items.length].focus();
+        }
+        e.preventDefault();
+      }
+      if (e.key === 'Enter' || e.key === ' ') {
+        if (document.activeElement && document.activeElement.getAttribute('role') === 'menuitem') {
+          document.activeElement.click();
+          e.preventDefault();
+        }
+      }
+    }
+
+    // Delegación de acciones
+    menu.addEventListener('click', function (e) {
+      const item = e.target.closest('[role="menuitem"]');
+      if (!item) return;
+      const action = item.dataset.action;
+      // Aquí puedes personalizar qué hace cada acción.
+      switch (action) {
+        case 'profile':
+          window.location.href = '/perfil';
+          break;
+        case 'settings':
+          window.location.href = '/ajustes';
+          break;
+        case 'help':
+          window.open('/ayuda', '_blank');
+          break;
+        case 'logout':
+          // ejemplo: llamar a endpoint de logout
+          if (confirm('¿Cerrar sesión?')) {
+            fetch('/logout', { method: 'POST', credentials: 'include' })
+              .then(() => window.location.reload())
+              .catch(() => window.location.reload());
+          }
+          break;
+        default:
+          console.log('Acción del menú:', action);
+      }
+      closeMenu();
+    });
+
+    toggle.addEventListener('click', toggleMenu);
+  })();
+</script>
+
+</body>
+</html>
