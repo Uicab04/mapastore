@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- right-dropdown component start -->
+<div id="right-dropdown" aria-hidden="false">
+  <div style="display:flex;flex-direction:column;align-items:flex-end;">
+    <nav id="rd-menu" role="menu" aria-hidden="true" aria-label="Menú lateral derecho">
+      <ul>
+        <li role="menuitem" tabindex="0" data-action="profile">Perfil</li>
+        <li role="menuitem" tabindex="0" data-action="settings">Ajustes</li>
+        <li class="rd-divider" aria-hidden="true"></li>
+        <li role="menuitem" tabindex="0" data-action="help">Ayuda</li>
+        <li role="menuitem" tabindex="0" data-action="logout">Cerrar sesión</li>
+      </ul>
+    </nav>
+
+    <button id="rd-toggle" aria-haspopup="true" aria-expanded="false" aria-controls="rd-menu" title="Abrir menú">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="5" cy="12" r="2" fill="white"/><circle cx="12" cy="12" r="2" fill="white"/><circle cx="19" cy="12" r="2" fill="white"/></svg>
+    </button>
+  </div>
+</div>
+
+<style>
+  /* Estilos mínimos para el componente */
+  #right-dropdown { position: fixed; right: 16px; top: 50%; transform: translateY(-50%); z-index: 9999; font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+  #rd-toggle { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg,#2b7cff,#0052d4); color: white; border: none; box-shadow: 0 6px 18px rgba(0,0,0,0.18); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  #rd-menu { margin-right: 8px; margin-bottom: 12px; background: white; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.12); overflow: hidden; min-width: 200px; transform-origin: 100% 50%; transition: transform 180ms ease, opacity 180ms ease; opacity: 0; transform: scale(0.92); pointer-events: none; }
+  #rd-menu.open { opacity: 1; transform: scale(1); pointer-events: auto; }
+  #rd-menu ul { list-style: none; margin: 0; padding: 8px 0; }
+  #rd-menu li { padding: 10px 16px; display: flex; gap: 10px; align-items: center; cursor: pointer; color: #111827; font-size: 14px; }
+  #rd-menu li:hover { background: #f3f4f6; }
+  #rd-menu .rd-divider { height: 1px; background: #e6e6e6; margin: 6px 0; }
+  @media (max-width: 480px) { #right-dropdown { right: 10px; } #rd-toggle { width:44px; height:44px; } #rd-menu { min-width: 160px; } }
+</style>
+
+<script>
+  (function () {
+    const toggle = document.getElementById('rd-toggle');
+    const menu = document.getElementById('rd-menu');
+    function openMenu() { menu.classList.add('open'); toggle.setAttribute('aria-expanded','true'); menu.setAttribute('aria-hidden','false'); const first = menu.querySelector('[role="menuitem"]'); if (first) first.focus(); document.addEventListener('click', outsideClick); document.addEventListener('keydown', onKeyDown); }
+    function closeMenu() { menu.classList.remove('open'); toggle.setAttribute('aria-expanded','false'); menu.setAttribute('aria-hidden','true'); document.removeEventListener('click', outsideClick); document.removeEventListener('keydown', onKeyDown); }
+    function toggleMenu(e) { e.stopPropagation(); if (menu.classList.contains('open')) closeMenu(); else openMenu(); }
+    function outsideClick(e) { if (!menu.contains(e.target) && e.target !== toggle) closeMenu(); }
+    function onKeyDown(e) {
+      if (e.key === 'Escape') { closeMenu(); toggle.focus(); }
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        const items = Array.from(menu.querySelectorAll('[role="menuitem"]'));
+        const idx = items.indexOf(document.activeElement);
+        if (e.key === 'ArrowDown') items[(idx + 1) % items.length].focus();
+        else items[(idx - 1 + items.length) % items.length].focus();
+        e.preventDefault();
+      }
+      if (e.key === 'Enter' || e.key === ' ') { if (document.activeElement && document.activeElement.getAttribute('role') === 'menuitem') { document.activeElement.click(); e.preventDefault(); } }
+    }
+    document.addEventListener('click', function (e) {});
+    (function(){
+      // Delegate clicks on menu items
+      const menuEl = document.getElementById('rd-menu');
+      if (menuEl) menuEl.addEventListener('click', function (e) {
+        const item = e.target.closest('[role="menuitem"]'); if (!item) return; const action = item.dataset.action;
+        switch (action) {
+          case 'profile': window.location.href = '/perfil'; break;
+          case 'settings': window.location.href = '/ajustes'; break;
+          case 'help': window.open('/ayuda', '_blank'); break;
+          case 'logout': if (confirm('¿Cerrar sesión?')) { fetch('/logout', { method: 'POST', credentials: 'include' }).then(()=>window.location.reload()).catch(()=>window.location.reload()); } break;
+          default: console.log('Acción del menú:', action);
+        }
+        // close if open
+        if (menuEl.classList.contains('open')) menuEl.classList.remove('open');
+      });
+    })();
+    if (toggle) toggle.addEventListener('click', toggleMenu);
+  })();
+</script>
+
+<!-- right-dropdown component end -->
+</body>
+</html>
